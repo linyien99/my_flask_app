@@ -1,11 +1,11 @@
 [
-    {"name": "商品 1", "image": "product1.jpg", "price": 170, "discount_price": 150, "hot": true, "category": "月卡"},
-    {"name": "商品 2", "image": "product2.jpg", "price": 330, "discount_price": 280, "hot": true, "category": "月卡"},
-    {"name": "商品 3", "image": "product3.jpg", "price": 670, "discount_price": 560, "category": "月卡"},
-    {"name": "商品 4", "image": "product4.jpg", "price": 33, "discount_price": 25, "category": "月相"},
-    {"name": "商品 5", "image": "product5.jpg", "price": 170, "discount_price": 135, "category": "月相"},
-    {"name": "商品 6", "image": "product6.jpg", "price": 490, "discount_price": 405, "category": "月相"},
-    {"name": "商品 7", "image": "product7.jpg", "price": 990, "discount_price": 770, "category": "月相"},
-    {"name": "商品 8", "image": "product8.jpg", "price": 1690, "discount_price": 1280, "category": "月相"},
-    {"name": "商品 9", "image": "product9.jpg", "price": 3290, "discount_price": 2520, "category": "月相"}
+    {"name": "月相觀測卡", "image": "product1.jpg", "price": 170, "discount_price": 150, "hot": true, "category": "月卡"},
+    {"name": "寰宇頻道", "image": "product2.jpg", "price": 330, "discount_price": 280, "hot": true, "category": "月卡"},
+    {"name": "寰宇特約", "image": "product3.jpg", "price": 670, "discount_price": 560, "category": "月卡"},
+    {"name": "60月相", "image": "product4.jpg", "price": 33, "discount_price": 25, "category": "月相"},
+    {"name": "300月相", "image": "product5.jpg", "price": 170, "discount_price": 135, "category": "月相"},
+    {"name": "980月相", "image": "product6.jpg", "price": 490, "discount_price": 405, "category": "月相"},
+    {"name": "1980月相", "image": "product7.jpg", "price": 990, "discount_price": 770, "category": "月相"},
+    {"name": "3280月相", "image": "product8.jpg", "price": 1690, "discount_price": 1280, "category": "月相"},
+    {"name": "6480月相", "image": "product9.jpg", "price": 3290, "discount_price": 2520, "category": "月相"}
 ]
