@@ -2,141 +2,483 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <title>我的商城</title>
+    <title>EN代儲</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Orbitron:wght@500;700&display=swap');
+
+        /* ---------------- 全局 ---------------- */
+        :root{
+            --primary: #00C8FF;
+            --secondary: #6F66FF;
+            --accent: #00FFE6;
+            --text: #C0D4FF;
+            --subtext: #9FB2C8;
+            --glass-bg: rgba(15,25,45,0.15);
+            --glass-border: rgba(100,200,255,0.2);
+        }
+
+        body{
+            font-family:'Poppins',sans-serif;
+            margin:0; padding:0;
+            background: linear-gradient(135deg,#0B0F1C 0%,#131A2B 50%,#1A2233 100%);
+            color:var(--text);
+            transition: background 0.5s, color 0.5s;
+        }
+
+        body.dark-mode{
+            background: linear-gradient(135deg,#000000,#111026,#222040);
+            color:#fff;
+        }
+
+        /* ---------------- Banner ---------------- */
+        .site-banner{
+            position:relative;
+            width:100%;
+            padding:60px 20px;
+            text-align:center;
+            overflow:hidden;
+            opacity:0.4;
+            filter: brightness(0.75);
+            transition: opacity 1.5s ease, filter 1.5s ease;
+        }
+        .site-banner.login-success{
+            animation: neonFadeIn 2s forwards;
+        }
+        @keyframes neonFadeIn{
+            0% {opacity:0.4; filter: brightness(0.75);}
+            100% {opacity:1; filter: brightness(1);}
+        }
+
+        .site-banner h1{
+            font-family: 'Orbitron',sans-serif;
+            font-size:3em;
+            color:#fff;
+            text-shadow:0 0 8px var(--primary),0 0 16px var(--secondary),0 0 24px var(--accent);
+            margin:0 0 10px 0;
+            position: relative;
+            display:inline-block;
+            background: linear-gradient(90deg, rgba(0,30,60,0.9), rgba(0,50,90,0.6), rgba(0,30,60,0.9));
+            padding:10px 20px;
+            border-radius:6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5), 0 0 8px var(--primary);
+        }
+        .site-banner.login-success h1::after{
+            content: '';
+            position: absolute;
+            top:0; left:-100%;
+            width:100%; height:100%;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            transform: skewX(-25deg);
+            animation: lightSweepFade 2s forwards;
+        }
+        @keyframes lightSweepFade{
+            0% {left:-100%; opacity:1;}
+            80% {left:100%; opacity:1;}
+            100% {left:100%; opacity:0;}
+        }
+
+        .site-banner p{
+            font-size:1.2em;
+            color:#fff;
+            margin-bottom:15px;
+            opacity:0;
+            transition: opacity 2s ease 1s;
+            background: linear-gradient(90deg, rgba(0,30,60,0.9), rgba(0,50,90,0.6), rgba(0,30,60,0.9));
+            display:inline-block;
+            padding:6px 12px;
+            border-radius:4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3), 0 0 4px var(--primary);
+        }
+        .site-banner.login-success p{
+            opacity:1;
+        }
+
+        /* ---------------- Neon 按鈕 ---------------- */
+        .btn-shop{
+            padding:10px 25px;
+            border-radius:8px;
+            font-weight:600;
+            color:#fff;
+            text-decoration:none;
+            background:linear-gradient(90deg,var(--primary),var(--secondary),var(--accent));
+            background-size:300% 100%;
+            animation: neonMove 3s linear infinite;
+            box-shadow:0 0 8px var(--primary),0 0 16px var(--secondary);
+            display:inline-block;
+            transition: all 1.5s ease;
+        }
+        .site-banner.login-success .btn-shop{
+            animation: neonMove 2s linear infinite, btnGlow 2s ease forwards;
+        }
+        @keyframes btnGlow{
+            0% {box-shadow:0 0 6px var(--primary),0 0 12px var(--secondary); transform: scale(0.95);}
+            50% {box-shadow:0 0 12px var(--accent),0 0 24px var(--secondary),0 0 36px var(--primary); transform: scale(1.05);}
+            100% {box-shadow:0 0 8px var(--accent),0 0 16px var(--secondary); transform: scale(1);}
+        }
+        @keyframes neonMove{
+            0%{background-position:0% 0%}
+            50%{background-position:100% 0%}
+            100%{background-position:0% 0%}
+        }
+
+        /* ---------------- 中心條 ---------------- */
+        .center-bar{
+            max-width:1000px;
+            margin:20px auto;
+            text-align:center;
+            display:flex;
+            gap:10px;
+            justify-content:center;
+            align-items:center;
+        }
+        .center-bar input, .center-bar select{
+            padding:6px 10px;
+            border-radius:6px;
+            border:none;
+            outline:none;
+            background: var(--glass-bg);
+            color: var(--text);
+            backdrop-filter: blur(10px) saturate(180%);
+        }
+        .center-bar input::placeholder{color:#bbb;}
+        .center-bar button{
+            padding:6px 12px;
+            border-radius:6px;
+            border:none;
+            background:linear-gradient(45deg,var(--primary),var(--secondary));
+            color:#fff;
+            cursor:pointer;
+            transition:background 0.2s, box-shadow 0.2s, transform 0.2s;
+        }
+        .center-bar button:hover{
+            background:linear-gradient(45deg,var(--secondary),var(--accent));
+            box-shadow: 0 0 12px var(--accent),0 0 24px var(--secondary);
+            transform: scale(1.03);
+        }
+        .dark-btn{
+            padding:6px 10px;
+            font-size:1.2em;
+            width:32px;
+            height:32px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            transition: all 0.3s;
+        }
+
+        .center-bar select{
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+        .center-bar select option{
+            background: rgba(15,25,45,0.95);
+            color: var(--text);
+        }
+
+        /* ---------------- 每日運勢懸浮視窗 ---------------- */
+        .fortune-widget{
+            position:fixed;
+            bottom:60px;
+            right:20px;
+            width:250px;
+            background: var(--glass-bg);
+            color: var(--text);
+            backdrop-filter: blur(8px) saturate(180%);
+            border-radius:12px;
+            box-shadow:0 4px 12px rgba(0,0,0,0.5);
+            display:none;
+            flex-direction:column;
+            z-index:2001;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .fortune-header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:8px 12px;
+            font-weight:600;
+            border-bottom:1px solid var(--glass-border);
+            background: rgba(0,0,0,0.2);
+            border-top-left-radius:12px;
+            border-top-right-radius:12px;
+        }
+
+        .close-fortune{
+            background:none;
+            border:none;
+            color:var(--text);
+            font-size:18px;
+            cursor:pointer;
+            transition: all 0.2s;
+        }
+        .close-fortune:hover{ color: var(--accent); }
+
+        .fortune-content{
+            padding:10px 12px;
+            text-align:center;
+        }
+
+        .fortune-btn{
+            margin-top:8px;
+            padding:6px 12px;
+            border:none;
+            border-radius:6px;
+            background: linear-gradient(45deg,var(--primary),var(--secondary));
+            color:#fff;
+            cursor:pointer;
+            transition: all 0.2s;
+        }
+        .fortune-btn:hover{
+            background: linear-gradient(45deg,var(--secondary),var(--accent));
+            box-shadow:0 0 12px var(--accent),0 0 24px var(--secondary);
+            transform: scale(1.03);
+        }
+
+        .open-fortune-btn{
+            position:fixed;
+            bottom:20px;
+            right:20px;
+            width:50px;
+            height:50px;
+            border-radius:50%;
+            border:none;
+            background: linear-gradient(45deg,var(--primary),var(--secondary));
+            color:#fff;
+            font-size:24px;
+            cursor:pointer;
+            z-index:2002;
+            box-shadow:0 0 12px var(--accent),0 0 24px var(--secondary);
+            transition: all 0.2s;
+        }
+        .open-fortune-btn:hover{
+            transform: scale(1.1);
+            box-shadow:0 0 16px var(--accent),0 0 32px var(--secondary);
+        }
+    </style>
 </head>
 <body>
-    <h1>產品商城</h1>
 
-    <div class="main-content">
-        <!-- 左側廣告 -->
-        <div class="ads-left">
-            <img src="{{ url_for('static', filename='ads/left_ad.jpg') }}" alt="左側廣告">
-        </div>
+<!-- ---------------- Banner 橫幅 ---------------- -->
+<div class="site-banner" id="siteBanner">
+    <div class="banner-content">
+        <h1>EN代儲小站</h1>
+        <p>安心有保障!歡迎選購!</p>
+        <a href="#products" class="btn-shop" id="shopBtn">立即購物</a>
+    </div>
+</div>
 
-        <div class="center-content">
-            {% for category, items in categorized.items() %}
-                <div class="category-banner">{{ category }}</div>
-                <div class="products">
-                    {% for product in items %}
-                        <div class="product-card">
-                            <img src="{{ url_for('static', filename='images/' + product.image) }}" alt="{{ product.name }}">
-                            {% if product.discount_price %}
-                                <span class="badge discount">折扣</span>
-                            {% endif %}
-                            {% if product.hot %}
-                                <span class="badge hot">🔥 熱銷</span>
-                            {% endif %}
-                            <div class="product-info">
-                                <h2>{{ product.name }}</h2>
-                                <div class="price">
-                                    {% if product.discount_price %}
-                                        <span class="original">NT$ {{ product.price }}</span>
-                                        <span class="discount-price">NT$ {{ product.discount_price }}</span>
-                                    {% else %}
-                                        <span class="discount-price">NT$ {{ product.price }}</span>
-                                    {% endif %}
-                                </div>
-                                <button class="add-btn" onclick="addToCart('{{ product.name }}', {{ product.discount_price or product.price }}, '{{ product.image }}')">加入購物車</button>
+<!-- ---------------- 假登入功能 ---------------- -->
+<div class="center-bar login-bar">
+    <input type="text" id="username" placeholder="帳號">
+    <input type="password" id="password" placeholder="密碼">
+    <button onclick="fakeLogin()">登入</button>
+    <span id="login-msg"></span>
+    <button class="dark-btn" onclick="toggleDark()"><i id="darkIcon" class="fa-regular fa-moon"></i></button>
+</div>
+
+<!-- ---------------- 搜尋與分類 ---------------- -->
+<div class="center-bar filter-bar">
+    <input type="text" id="searchInput" placeholder="搜尋商品...">
+    <select id="categorySelect">
+        <option value="all">全部分類</option>
+        {% for category in categorized.keys() %}
+        <option value="{{ category }}">{{ category }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<h1 class="main-title">鳴潮產品商城</h1>
+
+<div class="main-content" id="products">
+    <!-- 左側廣告 -->
+    <div class="ads-left">
+        <img src="{{ url_for('static', filename='ads/left_ad.jpg') }}" alt="左側廣告">
+    </div>
+
+    <div class="center-content">
+        {% for category, items in categorized.items() %}
+            <div class="category-banner">{{ category }}</div>
+            <div class="products">
+                {% for product in items %}
+                    <div class="product-card">
+                        <img src="{{ url_for('static', filename='images/' + product.image) }}" alt="{{ product.name }}">
+                        {% if product.discount_price %}<span class="badge discount">折扣</span>{% endif %}
+                        {% if product.hot %}<span class="badge hot">🔥 熱銷</span>{% endif %}
+                        <div class="product-info">
+                            <h2>{{ product.name }}</h2>
+                            <div class="price">
+                                {% if product.discount_price %}
+                                    <span class="original">NT$ {{ product.price }}</span>
+                                    <span class="discount-price">NT$ {{ product.discount_price }}</span>
+                                {% else %}
+                                    <span class="discount-price">NT$ {{ product.price }}</span>
+                                {% endif %}
                             </div>
+                            <button class="add-btn" onclick="addToCart('{{ product.name }}', {{ product.discount_price or product.price }}, '{{ product.image }}')">加入購物車</button>
                         </div>
-                    {% endfor %}
-                </div>
-            {% endfor %}
-        </div>
-
-        <!-- 右側廣告 -->
-        <div class="ads-right">
-            <img src="{{ url_for('static', filename='ads/right_ad.jpg') }}" alt="右側廣告">
-        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
     </div>
 
-    <!-- 購物車 -->
-    <div class="cart-container">
-        <h2>購物車</h2>
-        <div id="cart"></div>
-        <p id="total"></p>
-        <button class="checkout-btn" onclick="openModal()">結帳</button>
+    <!-- 右側廣告 -->
+    <div class="ads-right">
+        <img src="{{ url_for('static', filename='ads/right_ad.jpg') }}" alt="右側廣告">
     </div>
+</div>
 
-    <!-- 彈窗 -->
-    <div id="checkoutModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2>確認訂單</h2>
-            <p id="modal-text"></p>
-            <button class="confirm-btn" onclick="confirmPurchase()">確認付款</button>
-        </div>
+<!-- ---------------- 購物車 ---------------- -->
+<div class="cart-container">
+    <h2>購物車</h2>
+    <div id="cart"></div>
+    <p id="total"></p>
+    <button class="checkout-btn" onclick="openModal()">結帳</button>
+    <button class="clear-cart-btn" onclick="cart=[]; updateCart()">清空購物車</button>
+</div>
+
+<!-- ---------------- 彈窗 ---------------- -->
+<div id="checkoutModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>確認訂單</h2>
+        <p id="modal-text"></p>
+        <button class="confirm-btn" onclick="confirmPurchase()">確認付款</button>
     </div>
+</div>
 
-    <script>
-        let cart = [];
+<!-- ---------------- 每日運勢小遊戲 ---------------- -->
+<div id="fortuneWidget" class="fortune-widget">
+    <div class="fortune-header">
+        <span>每日運勢 🔮</span>
+        <button class="close-fortune" onclick="toggleFortune(false)">×</button>
+    </div>
+    <div class="fortune-content">
+        <p id="fortuneText">點擊下方按鈕獲取今日運勢！</p>
+        <button class="fortune-btn" onclick="getFortune(true)">抽運勢</button>
+    </div>
+</div>
+<button id="openFortuneBtn" class="open-fortune-btn" onclick="toggleFortune(true)">🔮</button>
 
-        function addToCart(name, price, image) {
-            let item = cart.find(i => i.name === name);
-            if(item){
-                item.qty++;
-            } else {
-                cart.push({name: name, price: price, qty: 1, image: image});
-            }
-            updateCart();
-        }
+<script>
+let cart = [];
+let isLoggedIn = false;
 
-        function updateCart() {
-            const cartDiv = document.getElementById('cart');
-            cartDiv.innerHTML = '';
-            let total = 0;
-            cart.forEach(item => {
-                const p = document.createElement('p');
-                p.innerHTML = `
-                    <img src="static/images/${item.image}" alt="${item.name}">
-                    <span>${item.name} - NT$ ${item.price}</span>
-                    <input type="number" class="cart-qty" value="${item.qty}" min="1" onchange="changeQty('${item.name}', this.value)">
-                    <button class="cart-delete-btn" onclick="removeFromCart('${item.name}')">刪除</button>
-                `;
-                cartDiv.appendChild(p);
-                total += item.price * item.qty;
-            });
-            document.getElementById('total').textContent = `總計：NT$ ${total}`;
-        }
+// ---------------- 購物車功能 ----------------
+function addToCart(name, price, image) {
+    if(!isLoggedIn){ alert('請先登入才能加入購物車'); return; }
+    let item = cart.find(i => i.name === name);
+    if(item){ item.qty++; } else { cart.push({name: name, price: price, qty: 1, image: image}); }
+    updateCart();
+}
 
-        function changeQty(name, qty){
-            let item = cart.find(i => i.name === name);
-            if(item){
-                item.qty = parseInt(qty);
-                updateCart();
-            }
-        }
+function updateCart() {
+    const cartDiv = document.getElementById('cart');
+    cartDiv.innerHTML = '';
+    let total = 0;
+    cart.forEach(item => {
+        const p = document.createElement('p');
+        p.innerHTML = `
+            <img src="static/images/${item.image}" alt="${item.name}">
+            <span>${item.name} - NT$ ${item.price}</span>
+            <input type="number" class="cart-qty" value="${item.qty}" min="1" onchange="changeQty('${item.name}', this.value)">
+            <button class="cart-delete-btn" onclick="removeFromCart('${item.name}')">刪除</button>
+        `;
+        cartDiv.appendChild(p);
+        total += item.price * item.qty;
+    });
+    document.getElementById('total').textContent = `總計：NT$ ${total}`;
+}
 
-        function removeFromCart(name){
-            cart = cart.filter(i => i.name !== name);
-            updateCart();
-        }
+function changeQty(name, qty){ let item = cart.find(i => i.name === name); if(item){ item.qty = parseInt(qty); updateCart(); } }
+function removeFromCart(name){ cart = cart.filter(i => i.name !== name); updateCart(); }
+function openModal(){ const modal = document.getElementById('checkoutModal'); modal.style.display = 'block'; const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0); document.getElementById('modal-text').textContent = `您的總計為 NT$ ${total}，是否確認付款？`; }
+function closeModal(){ document.getElementById('checkoutModal').style.display = 'none'; }
+function confirmPurchase(){ alert('感謝您的購買！'); cart = []; updateCart(); closeModal(); }
 
-        function openModal() {
-            const modal = document.getElementById('checkoutModal');
-            modal.style.display = 'block';
-            const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-            document.getElementById('modal-text').textContent = `您的總計為 NT$ ${total}，是否確認付款？`;
-        }
+// ---------------- 假登入 ----------------
+function fakeLogin() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    if(username && password){
+        isLoggedIn = true;
+        document.getElementById('login-msg').textContent = `歡迎, ${username}!`;
+        document.getElementById('siteBanner').classList.add('login-success');
+        document.getElementById('shopBtn').classList.add('login-success-btn');
+    } else { alert('請輸入帳號密碼'); }
+}
 
-        function closeModal() {
-            document.getElementById('checkoutModal').style.display = 'none';
-        }
+function toggleDark(){
+    document.body.classList.toggle('dark-mode');
+    const icon = document.getElementById('darkIcon');
+    icon.classList.toggle('fa-moon');
+    icon.classList.toggle('fa-sun');
+}
 
-        function confirmPurchase() {
-            alert('感謝您的購買！');
-            cart = [];
-            updateCart();
-            closeModal();
-        }
+// ---------------- 搜尋與分類 ----------------
+document.getElementById('searchInput').addEventListener('input', filterProducts);
+document.getElementById('categorySelect').addEventListener('change', filterProducts);
+function filterProducts(){
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const category = document.getElementById('categorySelect').value;
+    document.querySelectorAll('.product-card').forEach(card=>{
+        const name = card.querySelector('h2').textContent.toLowerCase();
+        const catBanner = card.closest('.products').previousElementSibling.textContent;
+        card.style.display = (name.includes(search) && (category==='all' || category===catBanner))?'':'none';
+    });
+}
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('checkoutModal');
-            if (event.target == modal) {
-                closeModal();
-            }
-        }
-    </script>
+window.onclick = function(event){ if(event.target == document.getElementById('checkoutModal')){ closeModal(); } }
+
+// ---------------- 每日運勢功能 ----------------
+const fortunes = [
+    "今天會遇到好運氣！🎉",
+    "小心身邊的誘惑，保持冷靜。⚠️",
+    "事業上會有好消息，努力加油！💼",
+    "愛情運提升，有好感情發生喔💖",
+    "今天是適合學習新技能的一天📚",
+    "小心財務支出，適合理性消費💰",
+    "心情平穩，適合休息放鬆🌿",
+    "創意滿滿，靈感爆棚！🎨"
+];
+
+function toggleFortune(show){
+    const widget = document.getElementById('fortuneWidget');
+    const btn = document.getElementById('openFortuneBtn');
+    if(show){
+        widget.style.display = 'flex';
+        btn.style.display = 'none';
+    } else {
+        widget.style.display = 'none';
+        btn.style.display = 'block';
+    }
+}
+
+// 抽運勢，可選每日自動刷新
+function getFortune(auto=false){
+    let today = new Date().toISOString().split('T')[0];
+    let storedDate = localStorage.getItem('fortuneDate');
+    let storedFortune = localStorage.getItem('fortuneText');
+
+    if(auto && storedDate === today && storedFortune){
+        document.getElementById('fortuneText').textContent = storedFortune;
+    } else {
+        const rand = Math.floor(Math.random()*fortunes.length);
+        const text = fortunes[rand];
+        document.getElementById('fortuneText').textContent = text;
+        localStorage.setItem('fortuneText', text);
+        localStorage.setItem('fortuneDate', today);
+    }
+}
+
+// 頁面載入時自動生成今日運勢
+window.addEventListener('DOMContentLoaded',()=>{
+    getFortune(true);
+});
+</script>
 </body>
 </html>

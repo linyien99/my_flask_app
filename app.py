@@ -1,6 +1,5 @@
-from flask import Flask, render_template 
-import json
-import os
+from flask import Flask, render_template, jsonify
+import json, os
 
 # 自動切換到 app.py 所在資料夾
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -35,6 +34,12 @@ def index():
     products = load_products()
     categorized = categorize_products(products)
     return render_template('index.html', categorized=categorized)
+
+# ---------------- 模擬 API 端點 ----------------
+@app.route('/api/products')
+def api_products():
+    products = load_products()
+    return jsonify(products)
 
 if __name__ == '__main__':
     app.run(debug=True)
