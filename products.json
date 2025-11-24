@@ -7,5 +7,9 @@
     {"name": "980月相", "image": "product6.jpg", "price": 490, "discount_price": 405, "category": "月相"},
     {"name": "1980月相", "image": "product7.jpg", "price": 990, "discount_price": 770, "category": "月相"},
     {"name": "3280月相", "image": "product8.jpg", "price": 1690, "discount_price": 1280, "category": "月相"},
-    {"name": "6480月相", "image": "product9.jpg", "price": 3290, "discount_price": 2520, "category": "月相"}
+    {"name": "6480月相", "image": "product9.jpg", "price": 3290, "discount_price": 2520, "category": "月相"},
+    {"name": "冠軍的月度馳援", "image": "product10.jpg", "price": 670, "discount_price": 560, "category": "禮包"},
+    {"name": "冠軍的鑄潮珍藏", "image": "product11.jpg", "price": 330, "discount_price": 280, "category": "禮包"},
+    {"name": "冠軍的浮金珍藏I", "image": "product12.jpg", "price": 330, "discount_price": 280, "category": "禮包"},
+    {"name": "冠軍的浮金珍藏II", "image": "product13.jpg", "price": 990, "discount_price": 770, "category": "禮包"}
 ]
