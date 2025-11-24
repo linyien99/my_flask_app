@@ -1,0 +1,261 @@
+/* ---------------- 字體 ---------------- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+
+    /* --- 深藍科技風漸層 + 鯨魚輪廓模糊背景（JPG） --- */
+    background-image:
+        url("../images/bg_whale.jpg"),
+        linear-gradient(135deg, #071220 0%, #0c1b38 40%, #13255a 100%);
+
+    /* 背景呈現方式（鯨魚大、置中） */
+    background-size: contain, cover;
+    background-repeat: no-repeat;
+    background-position: center 20%;
+    background-attachment: fixed;
+
+    /* 混合方式：柔和、朦朧美感 */
+    background-blend-mode: soft-light;
+
+    color: #fff;
+}
+
+h1 {
+    text-align: center;
+    margin: 20px 0;
+    color: #56d8ff;  /* 科技感藍色 */
+}
+
+/* ---------------- 左右廣告 ---------------- */
+.ads-left,
+.ads-right {
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 999;
+}
+
+.ads-left { left: 0; width: 180px; }
+.ads-right { right: 0; width: 180px; }
+
+.ads-left img,
+.ads-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ---------------- 主要內容 ---------------- */
+.main-content {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    gap: 20px;
+}
+
+.content-center {
+    max-width: 1000px;
+}
+
+/* ---------------- 商品類別橫幅 ---------------- */
+.category-banner {
+    font-size: 22px;
+    margin: 20px 0 10px;
+    padding: 8px 0;
+    background: rgba(255,255,255,0.08);
+    text-align: center;
+    border-radius: 8px;
+    font-weight: 600;
+    backdrop-filter: blur(3px);
+}
+
+/* ---------------- 商品列表 ---------------- */
+.products {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    justify-items: center;
+}
+
+/* ---------------- 商品卡片 ---------------- */
+.product-card {
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    backdrop-filter: blur(4px);
+    width: 220px;
+    padding: 15px;
+    position: relative;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+}
+
+.product-card img {
+    width: 100%;
+    border-radius: 6px;
+}
+
+/* ---------------- 商品徽章 ---------------- */
+.badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 4px 7px;
+    font-size: 12px;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.badge.hot {
+    background-color: #ff5722;
+}
+
+.badge.discount {
+    background-color: #e91e63;
+}
+
+/* ---------------- 價格 ---------------- */
+.price {
+    margin: 10px 0;
+}
+
+.price .original {
+    text-decoration: line-through;
+    color: #cccccc;
+    margin-right: 5px;
+}
+
+.price .discount-price {
+    font-weight: bold;
+    color: #56d8ff;
+}
+
+/* ---------------- 加入購物車按鈕 ---------------- */
+.add-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(45deg, #4db4ff, #007bff);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.add-btn:hover {
+    background: linear-gradient(45deg, #1c99ff, #005fcc);
+}
+
+/* ---------------- 購物車 ---------------- */
+.cart-container {
+    position: fixed;
+    top: 20px;
+    right: 200px;
+    width: 280px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    padding: 15px;
+    z-index: 1000;
+}
+
+.cart-container h2 {
+    margin-top: 0;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* 購物車內項目 */
+#cart p {
+    margin: 6px 0;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#cart input.cart-qty {
+    width: 40px;
+    margin-left: 5px;
+}
+
+/* 刪除按鈕 */
+.cart-delete-btn {
+    background: #e53935;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    padding: 2px 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.cart-delete-btn:hover {
+    background: #b71c1c;
+}
+
+/* ---------------- 彈窗 ---------------- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.65);
+}
+
+.modal-content {
+    background: rgba(255,255,255,0.08);
+    margin: 15% auto;
+    padding: 25px;
+    border-radius: 12px;
+    width: 320px;
+    text-align: center;
+    color: #fff;
+    backdrop-filter: blur(5px);
+}
+
+.close {
+    color: #bbb;
+    float: right;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #fff;
+}
+
+.confirm-btn, .checkout-btn {
+    padding: 6px 16px;
+    margin-top: 12px;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(45deg, #4db4ff, #007bff);
+    color: #fff;
+    cursor: pointer;
+}
+
+.confirm-btn:hover, .checkout-btn:hover {
+    background: linear-gradient(45deg, #1c99ff, #005fcc);
+}
+
+/* 購物車項目縮圖 */
+#cart img {
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    vertical-align: middle;
+    margin-right: 5px;
+}

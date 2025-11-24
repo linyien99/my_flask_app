@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>我的商城</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>產品商城</h1>
+
+    <div class="main-content">
+        <!-- 左側廣告 -->
+        <div class="ads-left">
+            <img src="{{ url_for('static', filename='ads/left_ad.jpg') }}" alt="左側廣告">
+        </div>
+
+        <div class="center-content">
+            {% for category, items in categorized.items() %}
+                <div class="category-banner">{{ category }}</div>
+                <div class="products">
+                    {% for product in items %}
+                        <div class="product-card">
+                            <img src="{{ url_for('static', filename='images/' + product.image) }}" alt="{{ product.name }}">
+                            {% if product.discount_price %}
+                                <span class="badge discount">折扣</span>
+                            {% endif %}
+                            {% if product.hot %}
+                                <span class="badge hot">🔥 熱銷</span>
+                            {% endif %}
+                            <div class="product-info">
+                                <h2>{{ product.name }}</h2>
+                                <div class="price">
+                                    {% if product.discount_price %}
+                                        <span class="original">NT$ {{ product.price }}</span>
+                                        <span class="discount-price">NT$ {{ product.discount_price }}</span>
+                                    {% else %}
+                                        <span class="discount-price">NT$ {{ product.price }}</span>
+                                    {% endif %}
+                                </div>
+                                <button class="add-btn" onclick="addToCart('{{ product.name }}', {{ product.discount_price or product.price }}, '{{ product.image }}')">加入購物車</button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- 右側廣告 -->
+        <div class="ads-right">
+            <img src="{{ url_for('static', filename='ads/right_ad.jpg') }}" alt="右側廣告">
+        </div>
+    </div>
+
+    <!-- 購物車 -->
+    <div class="cart-container">
+        <h2>購物車</h2>
+        <div id="cart"></div>
+        <p id="total"></p>
+        <button class="checkout-btn" onclick="openModal()">結帳</button>
+    </div>
+
+    <!-- 彈窗 -->
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>確認訂單</h2>
+            <p id="modal-text"></p>
+            <button class="confirm-btn" onclick="confirmPurchase()">確認付款</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function addToCart(name, price, image) {
+            let item = cart.find(i => i.name === name);
+            if(item){
+                item.qty++;
+            } else {
+                cart.push({name: name, price: price, qty: 1, image: image});
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartDiv = document.getElementById('cart');
+            cartDiv.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                const p = document.createElement('p');
+                p.innerHTML = `
+                    <img src="static/images/${item.image}" alt="${item.name}">
+                    <span>${item.name} - NT$ ${item.price}</span>
+                    <input type="number" class="cart-qty" value="${item.qty}" min="1" onchange="changeQty('${item.name}', this.value)">
+                    <button class="cart-delete-btn" onclick="removeFromCart('${item.name}')">刪除</button>
+                `;
+                cartDiv.appendChild(p);
+                total += item.price * item.qty;
+            });
+            document.getElementById('total').textContent = `總計：NT$ ${total}`;
+        }
+
+        function changeQty(name, qty){
+            let item = cart.find(i => i.name === name);
+            if(item){
+                item.qty = parseInt(qty);
+                updateCart();
+            }
+        }
+
+        function removeFromCart(name){
+            cart = cart.filter(i => i.name !== name);
+            updateCart();
+        }
+
+        function openModal() {
+            const modal = document.getElementById('checkoutModal');
+            modal.style.display = 'block';
+            const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+            document.getElementById('modal-text').textContent = `您的總計為 NT$ ${total}，是否確認付款？`;
+        }
+
+        function closeModal() {
+            document.getElementById('checkoutModal').style.display = 'none';
+        }
+
+        function confirmPurchase() {
+            alert('感謝您的購買！');
+            cart = [];
+            updateCart();
+            closeModal();
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('checkoutModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
